@@ -1,0 +1,11 @@
+Delete
+
+Deleting a record follows the same procedure as finding one. Although we are sending a DELETE HTTP request, the Sequelize method is destroy.
+
+db.pets.destory({
+  where: { name: 'Max' }
+})
+.then(deletedPet => {
+  console.log(`Has the Max been deleted? 1 means yes, 0 means no: ${deletedPet}`);
+});
+As you've probably gathered from the logged out response, Sequelize return a 1 or a 0 indicating the success of the destroy method.
