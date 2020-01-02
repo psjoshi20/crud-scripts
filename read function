@@ -1,0 +1,28 @@
+ead
+
+We finally have some data, so let's perform read operations on our tables. Searching by id is an efficient and precise way to find a record. For example, we can find the owner 'Loren' in the Owners table like so:
+
+db.users.findOne({
+  name: 'Loren'
+})
+.then(user => {
+  console.log(`Found user: ${user}`);
+});
+The problem is that findOne will return only the first matching record, even if it's the wrong Loren! Here's a better idea - search by id.
+
+db.users.findOne({
+  id: 'c0eebc45-9c0b-4ef8-bb6d-6bb9bd380a13'
+})
+.then(user => {
+  console.log(`Found user: ${user}`);
+});
+There's also the handy findAll method. Let's say we want to see all the owners with a role of 'admin'. Here's what that looks like using Sequelize:
+
+db.users.findAll({
+  role: 'admin'
+})
+.then(admins => {
+  console.log(`Found ${admins.length} matching records.`);
+});
+If you want to retrieve all the records from a table use: db.users.findAll().then(...)
+
