@@ -1,0 +1,30 @@
+Update
+
+Updating a record is only slightly more involved than creating or finding one.
+
+Before we can update a record, we have to find it. Then we use the updateAttributes method on the retrieved record.
+
+Here's one way to update a record:
+
+db.pets.findOne({
+  name: 'Max'
+})
+.then(pet => {
+  pet.updateAttributes({
+    name: 'Maxy-boi-boi'
+  });
+});
+The above code finds the first pet named 'Max', and then changes the name to 'Maxy-boi-boi' (his favorite nickname).
+
+The code below updated in the same way as that above, but does so in a single line.
+
+const newData = {
+  name: 'Maxy-boi-boi'
+};
+
+db.pets.update(newData, {where: { name: 'Max' } })
+.then(updatedMax => {
+  console.log(updatedMax)
+})
+Updating a record returns the record. This means that if you want to do something with the updated record (like send it back up to the client, or log it), you can add another .then() after the update, as the code above demonstrates.
+
