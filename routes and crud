@@ -1,0 +1,96 @@
+
+Routes and CRUD
+Let's take a quick look at the routes for performing CRUD operations on the owners model. The scenario for pets is very similar, and you can check it out in the repo.
+
+'use strict';
+
+module.exports = (app, db) => {
+
+  // GET all owners
+  app.get('/owners', (req, res) => {
+    db.owners.findAll()
+      .then(owners => {
+        res.json(owners);
+      });
+  });
+
+  // GET one owner by id
+  app.get('/owner/:id', (req, res) => {
+    const id = req.params.id;
+    db.owners.find({
+      where: { id: id }
+    })
+      .then(owner => {
+        res.json(owner);
+      });
+  });
+
+  // POST single owner
+  app.post('/owner', (req, res) => {
+    const name = req.body.name;
+    const role = req.body.role;
+    db.owners.create({
+      name: name,
+      role: role
+    })
+      .then(newOwner => {
+        res.json(newOwner);
+      })
+  });
+
+  // PATCH single owner
+  app.patch('/owner/:id', (req, res) => {
+    const id = req.params.id;
+    const updates = req.body.updates;
+    db.owners.find({
+      where: { id: id }
+    })
+      .then(owner => {
+        return owner.updateAttributes(updates)
+      })
+      .then(updatedOwner => {
+        res.json(updatedOwner);
+      });
+  });
+
+  // DELETE single owner
+  app.delete('/owner/:id', (req, res) => {
+    const id = req.params.id;
+    db.owners.destroy({
+      where: { id: id }
+    })
+      .then(deletedOwner => {
+        res.json(deletedOwner);
+      });
+  });
+};
+The only thing being done in the routes that we haven't covered above is grabbing ids from route parameters, and parsing the request body - both of which are routine procedures.
+
+One thing above that is noteworthy, is the PATCH route/update method (lines 38 - 50). You can see we're sending an updates object to our API from the client. This is to provide the flexibility of updating only one, or updating many columns. For instance I wanted to update only an owner's name, I would send a JSON request like this:
+
+{
+  "updates": {
+    "name": "Loren Stewart"
+  }
+}
+If I wanted to update more than one column, I would send something like this:
+
+{
+  "updates": {
+    "name": "Loren Stewart",
+    "role": "user"
+  }
+}
+That covers the basics of Sequelize CRUD operations. Check out my Sequelize CRUD 102 post to learn more advanced CRUD techniques.
+
+If you'd like to be notified when I publish new content, sign up for my mailing list in the navbar.
+
+Check out my free videos on The Serverless Framework!
+
+WRITTEN BY
+Loren Stewart
+Writing code with the wonderful devs at Speaker, a data-driven influencer marketing company. Also an educator for Codemore.
+
+Los Angeles, CA http://codemore.io 
+TAGS
+node.jsapisequelizeexpress.jsJavaScript
